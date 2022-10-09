@@ -3,10 +3,9 @@
 ##JSONB info: https://amercader.net/blog/beware-of-json-fields-in-sqlalchemy/
 
 import yaml
+from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import (
     create_engine,
-    MetaData,
-    Table,
     Column,
     Identity,
     Integer,
@@ -24,29 +23,30 @@ engine = create_engine(
     f"postgresql+psycopg2://{config['db']['user_name']}:{config['db']['password']}@{config['db']['host_name']}:{config['db']['port']}/{config['db']['db_name']}",
     echo=True,
 )
-meta = MetaData()
 
 ## Define table
-speed_test = Table(
-    "speed_test",
-    meta,
-    Column(
-        "speed_test_id",
+Base = declarative_base()
+
+
+class SpeedTest(Base):
+    __tablename__ = "speed_test"
+
+    speed_test_id = Column(
         Integer,
         Identity(start=1, increment=1, always=True, cycle=True),
         primary_key=True,
         unique=True,
         nullable=False,
-    ),
-    Column("timestamp", DateTime),
-    Column("download_speed_Mb", Float),
-    Column("upload_speed_Mb", Float),
-    Column("bytes_sent", Integer),
-    Column("bytes_received", Integer),
-    Column("ping", Float),
-    Column("server_info", MutableDict.as_mutable(JSONB)),
-)
+    )
+    timestamp = Column(DateTime)
+    download_speed_Mb = Column(Float)
+    upload_speed_Mb = Column(Float)
+    bytes_sent = Column(Integer)
+    bytes_received = Column(Integer)
+    ping = Column(Float)
+    server_info = Column(MutableDict.as_mutable(JSONB))
 
+
+# Base.metadata.drop_all(engine)
 ## Create table
-# meta.drop_all(engine)
-meta.create_all(engine)
+Base.metadata.create_all(engine)
