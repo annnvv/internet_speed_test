@@ -6,13 +6,14 @@ from typing import Dict
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-# from prefect import Task, Flow
+from prefect import task, flow
 import speedtest
 
 from define_speed_test_class import SpeedTest
 
 
 ## EXTRACT function
+@task
 def get_speed_test_data() -> Dict:
     speed_test = speedtest.Speedtest(secure=True)
     speed_test.get_best_server()
@@ -31,6 +32,7 @@ def bytes_to_mb(bytes):
     MB = KB * 1024  # One Mb is 1024 Kb
     return bytes / MB
 
+@task
 def transform_speed_test_data(dict: Dict) -> Dict:
     dict["download_speed_Mb"] = bytes_to_mb(dict["download"])
     dict["upload_speed_Mb"] = bytes_to_mb(dict["upload"])
@@ -46,6 +48,7 @@ def transform_speed_test_data(dict: Dict) -> Dict:
 
 
 ## LOAD
+@flow(name="Internet Speed Pipeline")
 def etl_pipeline() -> None:
     results = get_speed_test_data()
     results_transformed = transform_speed_test_data(results)
@@ -66,3 +69,7 @@ def etl_pipeline() -> None:
     s.add(data)
     s.commit()
     s.close()
+
+
+if __name__ == "__main__":
+    etl_pipeline()
