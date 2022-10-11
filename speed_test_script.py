@@ -15,6 +15,8 @@ from define_speed_test_class import SpeedTest
 ## EXTRACT function
 @task
 def get_speed_test_data() -> Dict:
+    """Get the internet speed test data and return a dictionary"""
+    
     speed_test = speedtest.Speedtest(secure=True)
     speed_test.get_best_server()
 
@@ -25,7 +27,7 @@ def get_speed_test_data() -> Dict:
     return dict
 
 ## TRANSFORM function
-def bytes_to_mb(bytes):
+def bytes_to_mb(bytes) -> float:
     """Convert bytes to megabytes"""
 
     KB = 1024  # One Kb is 1024 bytes
@@ -34,6 +36,8 @@ def bytes_to_mb(bytes):
 
 @task
 def transform_speed_test_data(dict: Dict) -> Dict:
+    """Perform transformation on speed test dictionary"""
+
     dict["download_speed_Mb"] = bytes_to_mb(dict["download"])
     dict["upload_speed_Mb"] = bytes_to_mb(dict["upload"])
 
@@ -69,6 +73,8 @@ def etl_pipeline() -> None:
     s.add(data)
     s.commit()
     s.close()
+
+    return None
 
 
 if __name__ == "__main__":
