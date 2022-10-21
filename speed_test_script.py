@@ -9,6 +9,9 @@ from sqlalchemy.orm import sessionmaker
 from prefect import task, flow
 import speedtest
 
+from prefect.deployments import Deployment
+from prefect.orion.schemas.schedules import CronSchedule
+
 from define_speed_test_class import SpeedTest
 
 
@@ -16,7 +19,7 @@ from define_speed_test_class import SpeedTest
 @task
 def get_speed_test_data() -> Dict:
     """Get the internet speed test data and return a dictionary"""
-    
+
     speed_test = speedtest.Speedtest(secure=True)
     speed_test.get_best_server()
 
@@ -26,6 +29,7 @@ def get_speed_test_data() -> Dict:
     dict = speed_test.results.dict()
     return dict
 
+
 ## TRANSFORM function
 def bytes_to_mb(bytes) -> float:
     """Convert bytes to megabytes"""
@@ -33,6 +37,7 @@ def bytes_to_mb(bytes) -> float:
     KB = 1024  # One Kb is 1024 bytes
     MB = KB * 1024  # One Mb is 1024 Kb
     return bytes / MB
+
 
 @task
 def transform_speed_test_data(dict: Dict) -> Dict:
@@ -77,5 +82,16 @@ def etl_pipeline() -> None:
     return None
 
 
+deployment = Deployment.build_from_flow(
+    flow=etl_pipeline,
+    name="speed_test_deployment",
+    schedule=(
+        CronSchedule(cron="22 * * * *", timezone="America/New_York")
+    ),  # run on the 22nd minute of every hour of everyday
+    work_queue_name="hourly_speed_test_queue",
+)
+
+
 if __name__ == "__main__":
-    etl_pipeline()
+    # etl_pipeline()
+    deployment.apply()
