@@ -13,6 +13,9 @@ Then, I plan to pull the data from the database and display it on a dashboard.
     - Use `speedtest-cli` package to get internet download and upload speeds
     - Insert data into database table using `sqlalchemy`
     - Schedule the ETL script using `prefect`
+    
+TODO:
+- create API interface to dashboard (using `fastAPI`).
 
 ## Lessons Learned
 
