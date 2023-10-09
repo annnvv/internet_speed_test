@@ -4,6 +4,9 @@ notebooks/
 # ignore database dir
 database/
 
+# prefect
+.prefectignore
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

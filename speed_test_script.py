@@ -10,7 +10,7 @@ from prefect import task, flow
 import speedtest
 
 from prefect.deployments import Deployment
-from prefect.orion.schemas.schedules import CronSchedule
+from prefect.server.schemas.schedules import CronSchedule
 
 from define_speed_test_class import SpeedTest
 

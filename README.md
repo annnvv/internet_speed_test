@@ -26,7 +26,7 @@ TODO:
 
 To launch the local prefect UI server:
 ```
-prefect orion start
+prefect server start
 ```
 
 To start the agent:
