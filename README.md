@@ -36,5 +36,10 @@ prefect agent start --work-queue "hourly_speed_test_queue"
 
 To launch fastAPI development server:
 ```
-uvicorn get_avg_download_speed:app --reload
+uvicorn fastapi_routes:app --reload
+```
+
+To launch Streamlit server:
+```
+streamlit run streamlit_dashboard.py
 ```
