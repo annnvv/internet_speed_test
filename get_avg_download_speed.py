@@ -53,3 +53,17 @@ async def execute_get_avg_download_speed_by_day():
         return {"error": str(e)}
     finally:
         await conn.close()
+
+
+@app.get("/get_data_all/")
+async def execute_get_data_all():
+    query = "SELECT * FROM speed_test;"
+
+    try:
+        conn = await get_database_connection()
+        result = await conn.fetch(query)
+        return result
+    except Exception as e:
+        return {"error": str(e)}
+    finally:
+        await conn.close()
