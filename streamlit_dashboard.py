@@ -1,6 +1,7 @@
 import datetime
 import streamlit  as st
 import requests
+import matplotlib.pyplot as plt
 
 st.set_page_config(layout="wide")
 st.title("Internet Speed Test Dashboard")
@@ -29,7 +30,28 @@ st.write(f"Average Internet Download Speed: {avg_speed['average_download_speed']
 middle_container = st.container()
 midcol1, midcol2 = st.columns(2)
 midcol1.header("Download - Timeseries")
+
+plt.figure(figsize=(10, 5))
+plt.plot(df['timestamp'], df['download_speed_Mb'], marker='o', linestyle='-')
+plt.title('Download Speed over Time')
+plt.xlabel('Timestamp')
+plt.ylabel('Download Speed (Mbps)')
+plt.grid(True)
+plt.show()
+
+midcol1.pyplot() ##need argument here
+
 midcol2.header("Upload - Timeseries")
+
+plt.figure(figsize=(10, 5))
+plt.plot(df['timestamp'], df['upload_speed_Mb'], marker='o', linestyle='-')
+plt.title('Upload Speed over Time')
+plt.xlabel('Timestamp')
+plt.ylabel('Upload Speed (Mbps)')
+plt.grid(True)
+plt.show()
+
+midcol2.pyplot() ##need argument here
 
 bottom_container = st.container()
 botcol1, botcol2 = st.columns(2)
