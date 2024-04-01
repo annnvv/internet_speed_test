@@ -6,11 +6,11 @@ from typing import Dict
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from prefect import task, flow
+from prefect import task, flow, serve
 import speedtest
 
-from prefect.deployments import Deployment
-from prefect.server.schemas.schedules import CronSchedule
+# from prefect.deployments import Deployment
+# from prefect.server.schemas.schedules import CronSchedule
 
 from define_speed_test_class import SpeedTest
 
@@ -74,6 +74,7 @@ def etl_pipeline() -> None:
     s = Session()
 
     data = SpeedTest(**results_transformed)
+    print(data)
 
     s.add(data)
     s.commit()
@@ -82,16 +83,24 @@ def etl_pipeline() -> None:
     return None
 
 
-deployment = Deployment.build_from_flow(
-    flow=etl_pipeline,
-    name="speed_test_deployment",
-    schedule=(
-        CronSchedule(cron="22 * * * *", timezone="America/New_York")
-    ),  # run on the 22nd minute of every hour of everyday
-    work_queue_name="hourly_speed_test_queue",
-)
+# deployment = Deployment.build_from_flow(
+#     flow=etl_pipeline,
+#     name="speed_test_deployment",
+#     schedule=(
+#         CronSchedule(cron="22 * * * *", timezone="America/New_York")
+#     ),  # run on the 22nd minute of every hour of everyday
+#     work_queue_name="hourly_speed_test_queue",
+# )
 
 
 if __name__ == "__main__":
     # etl_pipeline()
-    deployment.apply()
+    # deployment.apply()
+
+    etl_pipeline_deploy = etl_pipeline.to_deployment(        
+        name="speed_test_deployment",
+        cron = "25 * * * *", # run on the 22nd minute of every hour of everyday
+        # timezone = "America/New_York",
+        )
+
+    serve(etl_pipeline_deploy)
