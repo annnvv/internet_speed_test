@@ -23,7 +23,7 @@ df = DataFrame(dict(timestamp = timestamp, download_speed_Mb = download_speed_Mb
 df['date'] = df['timestamp'].dt.date
 st.set_option('deprecation.showPyplotGlobalUse', False)
 
-
+#TODO: use the year and month input to limit this query (will also need to update the endpoint to accept those two parameters)
 url = 'http://127.0.0.1:8000'
 avg_speed = requests.get(url = f'{url}/get_avg_download_speed').json()
 st.write(f"Average Internet Download Speed: {avg_speed['average_download_speed']:.2f} Mbps")
