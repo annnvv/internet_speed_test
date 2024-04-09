@@ -1,5 +1,5 @@
 import yaml
-from fastapi import FastAPI
+from fastapi import FastAPI, Query
 import asyncpg
 
 app = FastAPI()
@@ -49,6 +49,19 @@ async def execute_get_avg_download_speed_by_day():
 
         return {"average_by_day": formatted_result} 
     
+    except Exception as e:
+        return {"error": str(e)}
+    finally:
+        await conn.close()
+
+@app.get("/get_monthly_data/")
+async def execute_get_monthly_data(year: int = Query(None, description="Filter by year"), month: int =  Query(None, description="Filter by month") ):
+    query = "SELECT timestamp, \"download_speed_Mb\", \"upload_speed_Mb\" From speed_test WHERE date_part('year', timestamp) = $1 AND date_part('month', timestamp) = $2"
+    
+    try:
+        conn = await get_database_connection()
+        result = await conn.fetch(query, year, month)
+        return result
     except Exception as e:
         return {"error": str(e)}
     finally:
