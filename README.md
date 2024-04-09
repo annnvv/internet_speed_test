@@ -12,10 +12,15 @@ Then, I plan to pull the data from the database and display it on a dashboard.
 - Create ETL script to :
     - Use `speedtest-cli` package to get internet download and upload speeds
     - Insert data into database table using `sqlalchemy`
-    - Schedule the ETL script using `prefect`
-    
+    - Schedule the ETL script using `prefect` (maybe `cron`? tbd)
+- create API interface to dashboard (using `fastAPI`)
+- create a `streamlit` front-end dashboard    
+
 TODO:
-- create API interface to dashboard (using `fastAPI`).
+- change database to sqlite (no need for suped up postgresql. don't really need the jsonb column, it's a nice to have)
+- change all column names to lower case in DB (it's just slightly annoying to have to escape those columns names)
+- change all references to those columns in the various places
+- think about changing from prefect to chron for orchestration (chron might get the job done easier here) 
 
 ## Lessons Learned
 
