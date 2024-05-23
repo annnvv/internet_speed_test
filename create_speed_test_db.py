@@ -10,10 +10,7 @@ from define_speed_test_class import SpeedTest
 with open("database/config.yaml", "r") as f:
     config = yaml.safe_load(f)
 
-engine = create_engine(
-    f"postgresql+psycopg2://{config['db']['user_name']}:{config['db']['password']}@{config['db']['host_name']}:{config['db']['port']}/{config['db']['db_name']}",
-    echo=True,
-)
+engine = create_engine(f"sqlite:///{config['db']['db_name']}", echo=True)
 
 SpeedTest.metadata.drop_all(engine)
 ## Create table
