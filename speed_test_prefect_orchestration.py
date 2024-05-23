@@ -51,6 +51,7 @@ def transform_speed_test_data(dict: Dict) -> Dict:
         dict["share"],
         dict["download"],
         dict["upload"],
+        dict["server"]
     )  ## remove from dictionary, do not need this info
 
     return dict
@@ -65,10 +66,7 @@ def etl_pipeline() -> None:
     with open("database/config.yaml", "r") as f:
         config = yaml.safe_load(f)
 
-    engine = create_engine(
-        f"postgresql+psycopg2://{config['db']['user_name']}:{config['db']['password']}@{config['db']['host_name']}:{config['db']['port']}/{config['db']['db_name']}",
-        echo=True,
-    )
+    engine = create_engine(f"sqlite:///{config['db']['db_name']}", echo=True)
 
     Session = sessionmaker(bind=engine)
     s = Session()
