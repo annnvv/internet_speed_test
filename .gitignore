@@ -3,6 +3,7 @@ notebooks/
 
 # ignore database dir
 database/
+internet_speed
 
 # prefect
 .prefectignore
