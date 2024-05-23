@@ -7,7 +7,6 @@ from sqlalchemy import (
     DateTime,
 )
 from sqlalchemy.ext.mutable import MutableDict
-from sqlalchemy.dialects.postgresql import JSONB
 
 ## Define table
 Base = declarative_base()
@@ -29,4 +28,3 @@ class SpeedTest(Base):
     bytes_sent = Column(Integer)
     bytes_received = Column(Integer)
     ping = Column(Float)
-    server = Column(MutableDict.as_mutable(JSONB))
