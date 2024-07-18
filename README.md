@@ -8,7 +8,7 @@ Then, I plan to pull the data from the database using API requests and display i
 
 
 ## Skills Utilized
-- Define and create a SQLite database table using `sqlalchemy`
+- Define and create a ~PostgreSQL~ SQLite database table using `sqlalchemy`
 - Create ETL script to :
     - Use `speedtest-cli` package to get internet download and upload speeds
     - Insert data into database table using `sqlalchemy`
