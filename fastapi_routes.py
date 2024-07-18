@@ -20,7 +20,7 @@ async def get_database_connection():
 
 @app.get("/get_avg_download_speed/")
 async def execute_get_avg_download_speed():
-    query = "SELECT AVG(\"download_speed_Mb\") AS average_download_speed FROM speed_test;"
+    query = "SELECT AVG(download_speed_mb) AS average_download_speed FROM speed_test;"
 
     try:
         conn = await get_database_connection()
@@ -36,7 +36,7 @@ async def execute_get_avg_download_speed():
 
 @app.get("/get_avg_download_speed_by_day/")
 async def execute_get_avg_download_speed_by_day():
-    query = "SELECT AVG(\"download_speed_Mb\") AS average_download_speed, TO_CHAR(timestamp:: DATE, \'mm-dd-yyyy') as date FROM speed_test GROUP BY date;"
+    query = "SELECT AVG(download_speed_mb) AS average_download_speed, TO_CHAR(timestamp:: DATE, \'mm-dd-yyyy') as date FROM speed_test GROUP BY date;"
 
     try:
         conn = await get_database_connection()
@@ -56,7 +56,7 @@ async def execute_get_avg_download_speed_by_day():
 
 @app.get("/get_monthly_data/")
 async def execute_get_monthly_data(year: int = Query(None, description="Filter by year"), month: int =  Query(None, description="Filter by month") ):
-    query = "SELECT timestamp, \"download_speed_Mb\", \"upload_speed_Mb\" From speed_test WHERE date_part('year', timestamp) = $1 AND date_part('month', timestamp) = $2"
+    query = "SELECT timestamp, download_speed_mb, upload_speed_mb From speed_test WHERE date_part('year', timestamp) = $1 AND date_part('month', timestamp) = $2"
     
     try:
         conn = await get_database_connection()

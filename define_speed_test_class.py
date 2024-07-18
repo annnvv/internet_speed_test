@@ -1,12 +1,10 @@
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import (
     Column,
-    Identity,
     Integer,
     Float,
     DateTime,
 )
-from sqlalchemy.ext.mutable import MutableDict
+from sqlalchemy.ext.declarative import declarative_base
 
 ## Define table
 Base = declarative_base()
@@ -17,14 +15,13 @@ class SpeedTest(Base):
 
     speed_test_id = Column(
         Integer,
-        Identity(start=1, increment=1, always=True, cycle=True),
         primary_key=True,
-        unique=True,
+        autoincrement=True,
         nullable=False,
     )
     timestamp = Column(DateTime)
-    download_speed_Mb = Column(Float)
-    upload_speed_Mb = Column(Float)
+    download_speed_mb = Column(Float)
+    upload_speed_mb = Column(Float)
     bytes_sent = Column(Integer)
     bytes_received = Column(Integer)
     ping = Column(Float)

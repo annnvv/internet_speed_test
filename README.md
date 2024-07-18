@@ -3,28 +3,28 @@
 **Status**: In Progress
 
 **Purpose**: To see whether my internet provider is providing a consistent internet speed.
-In order to figure this out, I plan to query my internet speed periodically and store the data in a local PostgreSQL database.
-Then, I plan to pull the data from the database and display it on a dashboard.
+In order to figure this out, I plan to query my internet speed periodically and store the data in a local database.
+Then, I plan to pull the data from the database using API requests and display it on a dashboard.
 
 
 ## Skills Utilized
-- Define and create a PostgreSQL database table using `sqlalchemy`
+- Define and create a SQLite database table using `sqlalchemy`
 - Create ETL script to :
     - Use `speedtest-cli` package to get internet download and upload speeds
     - Insert data into database table using `sqlalchemy`
     - Schedule the ETL script using `prefect` (maybe `cron`? tbd)
 - create API interface to dashboard (using `fastAPI`)
-- create a `streamlit` front-end dashboard    
+- create a `Streamlit` front-end dashboard    
 
 TODO:
-- change database to sqlite (no need for suped up postgresql. don't really need the jsonb column, it's a nice to have)
-- change all column names to lower case in DB (it's just slightly annoying to have to escape those columns names)
-- change all references to those columns in the various places
+- [DONE] change database to sqlite (no need for suped up postgresql. don't really need the jsonb column, it's a nice to have)
+- [DONE] change all column names to lower case in DB (it's just slightly annoying to have to escape those columns names)
+- [DONE] change all references to those columns in the various places
 - think about changing from prefect to chron for orchestration (chron might get the job done easier here) 
 
 ## Lessons Learned
-
-
+- refactoring the code from PostgreSQL to SQLite wasn't too challenging; it was just a matter of finding all of the relevant references and updating them
+- Do NOT use capital letters in column names in a PostgreSQL database; you will need to escape them; just avoid it!
 
 
 ## Useful CLI commands
