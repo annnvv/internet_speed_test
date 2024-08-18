@@ -6,6 +6,15 @@
 In order to figure this out, I plan to query my internet speed periodically and store the data in a local database.
 Then, I plan to pull the data from the database using API requests and display it on a dashboard.
 
+## Workflow
+
+1. Define SpeedTest class in **define_speed_test_class.py**
+2. Create the sqlite db in **create_speed_test_db.py**
+3. Create script to download and lightly transform the data in **get_speed_test_data.py**
+4. Schedule the get_speed_test_data.py script to run hourly using cron 
+5. Create api routes to query db in **fastapi_routes.py**
+6. Create front-end visualization to display the data with download and upload speed reference levels in **streamlit_dashboard.py**
+
 
 ## Skills Utilized
 - Define and create a ~PostgreSQL~ SQLite database table using `sqlalchemy`
@@ -28,6 +37,15 @@ TODO:
 
 
 ## Useful CLI commands
+
+Cron commands
+
+Every 150 Minutes	*/150 * * * * /path/to/scriptx
+```
+chmod +x script.python
+crontab -e ##Create or Edit Crontab File
+crontab -l ##Check Active Cron Jobs
+```
 
 To launch the local prefect UI server:
 ```
