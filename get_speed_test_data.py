@@ -8,6 +8,7 @@ from dateutil import parser
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.exc import OperationalError
 import speedtest
 
 from define_speed_test_class import SpeedTest
@@ -63,21 +64,24 @@ def etl_pipeline() -> None:
     with open("database/config.yaml", "r") as f:
         config = yaml.safe_load(f)
 
-    engine = create_engine(f"sqlite:///{config['db']['db_name']}", echo=True)
+    try:
+        engine = create_engine(f"sqlite:///{config['db']['db_name']}", echo=True)
+        Session = sessionmaker(bind=engine)
+        s = Session()
 
-    Session = sessionmaker(bind=engine)
-    s = Session()
-    print(s)
+    except OperationalError as e:
+        print(f"Error: {e}")
+        return None
 
     data = SpeedTest(**results_transformed)
     print(data)
 
     s.add(data)
     s.commit()
-    print("date committed to db")
     s.close()
 
     return None
 
 if __name__ == "__main__":
     etl_pipeline()
+    print("FUNCTION: etl_pipeline FINISHED running (in get_speed_test_data.py)")

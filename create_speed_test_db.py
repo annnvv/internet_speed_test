@@ -15,3 +15,5 @@ engine = create_engine(f"sqlite:///{config['db']['db_name']}", echo=True)
 SpeedTest.metadata.drop_all(engine)
 ## Create table
 SpeedTest.metadata.create_all(engine)
+
+print("FILE: create_speed_test_db.py FINISHED running")
